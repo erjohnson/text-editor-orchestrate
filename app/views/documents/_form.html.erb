@@ -1,0 +1,5 @@
+<%= form_tag("/documents", method: "post") do %>
+  <%= label_tag(:title, "New Document") %>
+  <%= text_field_tag(:title) %>
+  <%= submit_tag("Create") %>
+<% end %>

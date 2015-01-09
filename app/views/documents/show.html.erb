@@ -1,0 +1,41 @@
+
+<a href="/">Back Home</a>
+<br/>
+<br/>
+<h1 id="title"><%= @title %></h1>
+<hr>
+
+<%= form_tag(undo_document_path, method: "PUT", remote: true) do %>
+  <%= hidden_field_tag("title", value: @title) %>
+  <%= submit_tag "undo", class: "button" %>
+<% end %>
+
+<p><span id="saved">Saved!</span>&nbsp;</p>
+
+<textarea class="u-full-width" id="editor"></textarea>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+    $("textarea#editor").val('<%= @content %>');
+    function save() {
+      var title = $("h1#title").text();
+      var content = $("textarea#editor").val();
+      $.ajax({
+        url: '<%= document_url %>',
+        type: 'PUT',
+        data: {title: title, content: content}
+      });
+    };
+
+    var timeoutId;
+
+    $('#editor').on('input propertychange', function() {
+        console.log('Textarea Change');
+        
+        clearTimeout(timeoutId);
+        timeoutId = setTimeout(function() {   
+            save();
+        }, 1000);
+    });
+  });
+</script>
